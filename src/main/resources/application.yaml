@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-wispy-truth-ahpfps8q.c-3.us-east-1.aws.neon.tech/Thgt_Nest?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_Qsc0dplRYM9w
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mannesri2005@gmail.com
+    password: npybfduxwxyidptz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  security:
+    user:
+      name: msree
+      password: pink
+
+server:
+  port: 8080
