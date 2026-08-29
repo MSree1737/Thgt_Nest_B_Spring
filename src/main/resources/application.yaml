@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ep-wispy-truth-ahpfps8q.c-3.us-east-1.aws.neon.tech/Thgt_Nest?sslmode=require&channel_binding=require
-    username: neondb_owner
-    password: npg_Qsc0dplRYM9w
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     hibernate:
@@ -14,8 +14,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: mannesri2005@gmail.com
-    password: npybfduxwxyidptz
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -23,10 +23,5 @@ spring:
           starttls:
             enable: true
 
-  security:
-    user:
-      name: msree
-      password: pink
-
 server:
-  port: 8080
+  port: ${PORT:8080}

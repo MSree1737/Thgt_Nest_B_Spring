@@ -2,10 +2,14 @@ package com.yourname.blog.Blog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 public class CorsConfig {
+
+    @Value("${app.cors.allowed-origin:http://localhost:5173}")
+    private String allowedOrigin;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -13,7 +17,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins(allowedOrigin)
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);
