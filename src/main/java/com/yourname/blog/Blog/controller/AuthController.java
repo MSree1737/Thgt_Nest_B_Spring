@@ -7,6 +7,7 @@ import com.yourname.blog.Blog.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -22,6 +23,7 @@ public class AuthController {
     private final UserRepository userRepository;
 
     @PostMapping({"/api/auth/register", "/api/user"})
+    @Transactional
     public ResponseEntity<?> register(@Valid @RequestBody UserRequest request) {
 
         UserResponse response = userService.register(request);

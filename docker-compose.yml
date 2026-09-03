@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: ${DATABASE_URL}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ep-wispy-truth-ahpfps8q-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       SPRING_DATASOURCE_USERNAME: ${DATABASE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
       SPRING_MAIL_USERNAME: ${MAIL_USERNAME}

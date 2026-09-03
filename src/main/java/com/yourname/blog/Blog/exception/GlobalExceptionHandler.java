@@ -2,11 +2,24 @@ package com.yourname.blog.Blog.exception;
 
 import com.yourname.blog.Blog.util.ApiResponse;
 import org.springframework.http.*;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MailException.class)
+    public ResponseEntity<ApiResponse<String>> handleMailFailure(MailException ex) {
+
+        ApiResponse<String> response = new ApiResponse<>(
+                false,
+                "Unable to send the verification email. Please try again later.",
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleNotFound(ResourceNotFoundException ex) {
