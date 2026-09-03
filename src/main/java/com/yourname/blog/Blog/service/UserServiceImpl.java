@@ -19,8 +19,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse register(UserRequest request) {
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
+        var existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            if (user.isVerified()) {
+                throw new RuntimeException("Email already registered");
+            }
+
+            // The account was created before OTP verification.  Let the controller
+            // send a new OTP instead of preventing the user from completing signup.
+            return new UserResponse(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail()
+            );
         }
 
         User user = User.builder()
