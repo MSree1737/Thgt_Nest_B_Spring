@@ -27,5 +27,9 @@ spring:
           starttls:
             enable: true
 
+app:
+  cors:
+    allowed-origins: ${FRONTEND_URL:http://localhost:5173}
+
 server:
   port: ${PORT:8080}

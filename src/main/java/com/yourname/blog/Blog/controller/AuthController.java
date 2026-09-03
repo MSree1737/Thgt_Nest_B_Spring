@@ -5,6 +5,7 @@ import com.yourname.blog.Blog.dto.UserRequest;
 import com.yourname.blog.Blog.dto.UserResponse;
 import com.yourname.blog.Blog.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import com.yourname.blog.Blog.service.*;
 import com.yourname.blog.Blog.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -21,8 +21,8 @@ public class AuthController {
     private final OtpService otpService;
     private final UserRepository userRepository;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserRequest request) {
+    @PostMapping({"/api/auth/register", "/api/user"})
+    public ResponseEntity<?> register(@Valid @RequestBody UserRequest request) {
 
         UserResponse response = userService.register(request);
         otpService.generateAndSendOtp(request.getEmail());
@@ -31,7 +31,7 @@ public class AuthController {
                 .body(new ApiResponse<>(true, "User registered & OTP SENT successfully", response));
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/api/auth/verify")
     public ResponseEntity<?> verifyOtp(@RequestBody OtpVerifyRequest request) {
 
         boolean verified = otpService.verifyOtp(request.getEmail(), request.getOtp());

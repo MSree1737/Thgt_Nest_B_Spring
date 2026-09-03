@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/health", "/api/auth/**").permitAll()
+                        .requestMatchers("/api/health", "/api/auth/**", "/api/user").permitAll()
                         .requestMatchers("/api/comments").permitAll()
                         .anyRequest().authenticated()
                 )
