@@ -3,7 +3,9 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
-    url: ${DATABASE_JDBC_URL}
+    # Render/Neon commonly provide DATABASE_URL as postgresql://...;
+    # PostgreSQL's JDBC driver requires the jdbc: prefix.
+    url: ${DATABASE_JDBC_URL:jdbc:${DATABASE_URL}}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
