@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:thoughtnest;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+# Local only: no hosted database or outbound OTP email is required.
+app:
+  jwt:
+    secret: ${JWT_SECRET:local-development-secret-change-before-production-123}

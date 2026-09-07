@@ -43,4 +43,13 @@ public class User {
 
     @Column(nullable = false)
     private boolean isVerified = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private String provider = "LOCAL";
+
+    @Column(unique = true)
+    private String providerId;
+
+    private String profileImage;
 }

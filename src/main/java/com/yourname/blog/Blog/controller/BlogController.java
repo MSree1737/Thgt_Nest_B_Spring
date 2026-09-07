@@ -45,6 +45,11 @@ public class BlogController {
         );
     }
 
+    @GetMapping("/mine")
+    public ResponseEntity<ApiResponse<List<Blog>>> getMyBlogs() {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Your blogs fetched successfully", blogService.getMyBlogs()));
+    }
+
     // ✅ Get Blog By ID
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Blog>> getBlog(@PathVariable Long id) {

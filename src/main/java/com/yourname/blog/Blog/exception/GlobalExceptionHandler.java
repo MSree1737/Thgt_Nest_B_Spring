@@ -4,10 +4,17 @@ import com.yourname.blog.Blog.util.ApiResponse;
 import org.springframework.http.*;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse<String>> handleDuplicateData(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse<>(false, "An account with this email already exists. Sign in instead.", null));
+    }
 
     @ExceptionHandler(MailException.class)
     public ResponseEntity<ApiResponse<String>> handleMailFailure(MailException ex) {

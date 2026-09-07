@@ -28,7 +28,9 @@ public class Blog {
 
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // Article cards and DTOs always need author information. Eagerly load this
+    // small relation so API serialization never fails after the DB session closes.
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User author;

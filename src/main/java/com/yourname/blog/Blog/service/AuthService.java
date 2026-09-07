@@ -32,6 +32,10 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
+        if (!user.isVerified()) {
+            throw new RuntimeException("Please verify your email before signing in");
+        }
+
         return jwtUtil.generateToken(user.getEmail());
     }
 }
