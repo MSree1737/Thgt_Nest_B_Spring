@@ -3,6 +3,8 @@ package com.yourname.blog.Blog.exception;
 import com.yourname.blog.Blog.util.ApiResponse;
 import org.springframework.http.*;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,18 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class, BadCredentialsException.class})
+    public ResponseEntity<ApiResponse<String>> handleBadRequestExceptions(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<String>> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiResponse<>(false, ex.getMessage(), null));
+    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<String>> handleDuplicateData(DataIntegrityViolationException ex) {

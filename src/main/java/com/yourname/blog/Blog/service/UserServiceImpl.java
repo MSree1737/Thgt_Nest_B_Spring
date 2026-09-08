@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
         if (existingUser.isPresent()) {
             User user = existingUser.get();
             if (user.isVerified()) {
-                throw new RuntimeException("Email already registered");
+                throw new IllegalArgumentException("Email already registered");
             }
 
             // The account was created before OTP verification.  Let the controller

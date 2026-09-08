@@ -3,6 +3,7 @@ package com.yourname.blog.Blog.service;
 import com.yourname.blog.Blog.entity.Blog;
 import com.yourname.blog.Blog.entity.Like;
 import com.yourname.blog.Blog.entity.User;
+import com.yourname.blog.Blog.exception.ResourceNotFoundException;
 import com.yourname.blog.Blog.repository.BlogRepository;
 import com.yourname.blog.Blog.repository.LikeRepository;
 import com.yourname.blog.Blog.repository.UserRepository;
@@ -29,10 +30,10 @@ public class LikeServiceImpl implements LikeService {
                 .getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Blog blog = blogRepository.findById(blogId)
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Blog not found with id: " + blogId));
 
         return likeRepository.findByBlogAndUser(blog, user)
                 .map(existingLike -> {
@@ -54,7 +55,7 @@ public class LikeServiceImpl implements LikeService {
     public long getLikeCount(Long blogId) {
 
         Blog blog = blogRepository.findById(blogId)
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Blog not found with id: " + blogId));
 
         return likeRepository.countByBlog(blog);
     }

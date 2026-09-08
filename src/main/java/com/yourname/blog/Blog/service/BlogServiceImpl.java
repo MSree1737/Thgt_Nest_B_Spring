@@ -9,6 +9,7 @@ import com.yourname.blog.Blog.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,7 @@ public class BlogServiceImpl implements BlogService {
         User currentUser = getCurrentUser();
 
         if (!blog.getAuthor().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("You are not allowed to update this blog");
+            throw new AccessDeniedException("You are not allowed to update this blog");
         }
 
         blog.setTitle(updatedBlog.getTitle());
@@ -83,7 +84,7 @@ public class BlogServiceImpl implements BlogService {
         User currentUser = getCurrentUser();
 
         if (!blog.getAuthor().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("You are not allowed to delete this blog");
+            throw new AccessDeniedException("You are not allowed to delete this blog");
         }
 
         blogRepository.delete(blog);
