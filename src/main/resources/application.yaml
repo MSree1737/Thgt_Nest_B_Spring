@@ -3,17 +3,17 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL:}
+    username: ${DATABASE_USERNAME:}
+    password: ${DATABASE_PASSWORD:}
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   mail:
     username: ${MAIL_USERNAME:mannesri2005@gmail.com}
@@ -28,9 +28,10 @@ brevo:
 app:
   frontend-url: ${FRONTEND_URL:http://localhost:5173}
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:thoughtnest-secure-production-jwt-secret-key-at-least-32-characters}
   cors:
     allowed-origins: ${FRONTEND_URL:http://localhost:5173}
 
 server:
   port: ${PORT:8080}
+

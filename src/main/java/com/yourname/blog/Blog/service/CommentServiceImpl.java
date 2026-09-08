@@ -2,6 +2,7 @@ package com.yourname.blog.Blog.service;
 
 import com.yourname.blog.Blog.dto.CommentRequest;
 import com.yourname.blog.Blog.entity.*;
+import com.yourname.blog.Blog.exception.ResourceNotFoundException;
 import com.yourname.blog.Blog.repository.*;
 
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,10 @@ public class CommentServiceImpl implements CommentService {
                 .getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Blog blog = blogRepository.findById(request.getBlogId())
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Blog not found with id: " + request.getBlogId()));
 
         Comment comment = Comment.builder()
                 .content(request.getContent())
@@ -48,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getCommentsByBlog(Long blogId) {
 
         Blog blog = blogRepository.findById(blogId)
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Blog not found with id: " + blogId));
 
         return commentRepository.findByBlog(blog);
     }

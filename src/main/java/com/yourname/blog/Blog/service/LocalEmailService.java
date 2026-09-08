@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /** Local-only mail substitute: preserves the OTP workflow without sending real email. */
 @Slf4j
 @Service
-@Profile("local")
+@Profile({"local", "test"})
 public class LocalEmailService implements EmailService {
     @Override
     public void sendOtp(String to, String otp) {

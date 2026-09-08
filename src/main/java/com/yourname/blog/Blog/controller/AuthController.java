@@ -3,6 +3,7 @@ package com.yourname.blog.Blog.controller;
 import com.yourname.blog.Blog.dto.OtpVerifyRequest;
 import com.yourname.blog.Blog.dto.UserRequest;
 import com.yourname.blog.Blog.dto.UserResponse;
+import com.yourname.blog.Blog.exception.ResourceNotFoundException;
 import com.yourname.blog.Blog.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
@@ -43,7 +44,8 @@ public class AuthController {
                     .body(new ApiResponse<>(false, "Invalid or Expired OTP", null));
         }
 
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
 
         user.setVerified(true);
         userRepository.save(user);
