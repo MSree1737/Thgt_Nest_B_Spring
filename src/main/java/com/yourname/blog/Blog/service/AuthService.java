@@ -2,8 +2,10 @@ package com.yourname.blog.Blog.service;
 
 import com.yourname.blog.Blog.dto.LoginRequest;
 import com.yourname.blog.Blog.entity.User;
+import com.yourname.blog.Blog.exception.ResourceNotFoundException;
 import com.yourname.blog.Blog.repository.UserRepository;
 import com.yourname.blog.Blog.security.JwtUtil;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +28,14 @@ public class AuthService {
     public String login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new BadCredentialsException("Invalid credentials");
         }
 
         if (!user.isVerified()) {
-            throw new RuntimeException("Please verify your email before signing in");
+            throw new IllegalStateException("Please verify your email before signing in");
         }
 
         return jwtUtil.generateToken(user.getEmail());
