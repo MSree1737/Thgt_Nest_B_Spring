@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()               
                         .requestMatchers("/", "/health", "/api/health", "/api/auth/**", "/api/user").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/articles/mine", "/api/blogs/mine", "/api/users/me", "/api/bookmarks").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/articles/**", "/api/blogs/**", "/api/comments/**", "/api/likes/**").permitAll()
