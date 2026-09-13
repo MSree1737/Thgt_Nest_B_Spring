@@ -46,11 +46,13 @@ public class BookmarkController {
 
         if (existing.isPresent()) {
             bookmarks.delete(existing.get());
-            return Map.of("bookmarked", false);
+            bookmarks.flush();
+            return Map.of("bookmarked", false, "message", "Story removed from saved");
         }
 
         bookmarks.save(Bookmark.builder().blog(blog).user(user).build());
-        return Map.of("bookmarked", true);
+        bookmarks.flush();
+        return Map.of("bookmarked", true, "message", "Story saved to your library");
     }
 
     @GetMapping

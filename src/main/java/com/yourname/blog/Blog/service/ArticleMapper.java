@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import com.yourname.blog.Blog.repository.FollowRepository;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleMapper {
@@ -24,6 +26,7 @@ public class ArticleMapper {
     private final CommentRepository comments;
     private final BookmarkRepository bookmarks;
     private final UserRepository users;
+    private final FollowRepository follows;
 
     public ArticleResponse map(Blog blog) {
         String text = blog.getContent() != null ? blog.getContent() : "";
@@ -34,6 +37,7 @@ public class ArticleMapper {
 
         boolean liked = false;
         boolean saved = false;
+        boolean authorFollowed = false;
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
@@ -41,6 +45,9 @@ public class ArticleMapper {
             if (currentUser.isPresent()) {
                 liked = likes.findByBlogAndUser(blog, currentUser.get()).isPresent();
                 saved = bookmarks.findByBlogAndUser(blog, currentUser.get()).isPresent();
+                if (blog.getAuthor() != null) {
+                    authorFollowed = follows.existsByFollowerAndFollowed(currentUser.get(), blog.getAuthor());
+                }
             }
         }
 
@@ -61,7 +68,8 @@ public class ArticleMapper {
                 commentCount,
                 minutes,
                 liked,
-                saved
+                saved,
+                authorFollowed
         );
     }
 }

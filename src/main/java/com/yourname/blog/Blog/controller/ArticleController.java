@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.yourname.blog.Blog.entity.Follow;
+import com.yourname.blog.Blog.repository.FollowRepository;
+
 @RestController
 @RequestMapping("/api/articles")
 @RequiredArgsConstructor
@@ -37,6 +40,7 @@ public class ArticleController {
     private final UserRepository users;
     private final CommentRepository comments;
     private final ArticleMapper mapper;
+    private final FollowRepository follows;
 
     private User me() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -77,6 +81,25 @@ public class ArticleController {
                 .stream()
                 .map(mapper::map)
                 .toList();
+    }
+
+    @GetMapping("/following")
+    @Transactional(readOnly = true)
+    public Page<ArticleResponse> following(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        User current = me();
+        List<User> followedUsers = follows.findByFollower(current)
+                .stream()
+                .map(Follow::getFollowed)
+                .toList();
+
+        if (followedUsers.isEmpty()) {
+            return Page.empty(PageRequest.of(page, size));
+        }
+
+        return blogs.findByAuthorIn(followedUsers, PageRequest.of(page, size, Sort.by("createdAt").descending()))
+                .map(mapper::map);
     }
 
     @PostMapping
