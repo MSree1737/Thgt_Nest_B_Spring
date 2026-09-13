@@ -23,7 +23,7 @@ public class OtpServiceImpl implements OtpService {
         OtpVerification otpEntity = OtpVerification.builder()
                 .email(email)
                 .otp(otp)
-                .expiryTime(LocalDateTime.now().plusMinutes(5))
+                .expiryTime(LocalDateTime.now().plusMinutes(10))
                 .used(false)
                 .build();
 

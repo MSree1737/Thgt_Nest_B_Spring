@@ -41,6 +41,15 @@ public class User {
     @JsonManagedReference
     private List<Blog> blogs;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isVerified = false;
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 }
+

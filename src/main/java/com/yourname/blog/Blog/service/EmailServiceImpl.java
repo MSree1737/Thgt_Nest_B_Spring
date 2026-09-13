@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@Profile("!local")
+@Profile("!local & !test")
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
@@ -31,6 +31,11 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendOtp(String to, String otp) {
         log.info("Sending OTP email to {} via Brevo REST API", to);
+
+        if (apiKey == null || apiKey.trim().isEmpty()) {
+            log.warn("Brevo API key is not configured; OTP for {}: {}", to, otp);
+            return;
+        }
 
         Map<String, Object> requestBody = Map.of(
                 "sender", Map.of("name", senderName, "email", senderEmail),

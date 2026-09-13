@@ -4,7 +4,7 @@ import com.yourname.blog.Blog.security.JwtAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,8 +25,10 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/health", "/api/auth/**", "/api/user").permitAll()
-                        .requestMatchers("/api/comments").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()               
+                        .requestMatchers("/", "/health", "/api/health", "/api/auth/**", "/api/user").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/articles/mine", "/api/blogs/mine", "/api/users/me", "/api/bookmarks").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/articles/**", "/api/blogs/**", "/api/comments/**", "/api/likes/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter,
@@ -35,3 +37,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+

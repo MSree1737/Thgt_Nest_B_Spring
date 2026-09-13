@@ -8,10 +8,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://ep-wispy-truth-ahpfps8q-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-      SPRING_DATASOURCE_USERNAME: ${DATABASE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
-      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
-      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
-      APP_CORS_ALLOWED_ORIGIN: ${FRONTEND_URL:-http://localhost:5173}
+      DATABASE_URL: ${DATABASE_URL:-jdbc:postgresql://ep-wispy-truth-ahpfps8q-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-}
+      JWT_SECRET: ${JWT_SECRET:-thoughtnest-secure-production-jwt-secret-key-at-least-32-characters}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
     restart: unless-stopped

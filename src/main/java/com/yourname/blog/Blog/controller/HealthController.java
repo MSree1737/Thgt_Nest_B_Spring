@@ -1,13 +1,20 @@
 package com.yourname.blog.Blog.controller;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
 public class HealthController {
 
-    @GetMapping("/health")
-    public String healthCheck() {
-        return "Blog Backend Running";
+    @GetMapping({"/", "/health", "/api/health"})
+    public ResponseEntity<Map<String, Object>> healthCheck() {
+        return ResponseEntity.ok(Map.of(
+                "status", "UP",
+                "service", "Blog Backend",
+                "timestamp", System.currentTimeMillis()
+        ));
     }
 }
