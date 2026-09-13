@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.yourname.blog.Blog.dto.LikeResponse;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
@@ -21,7 +24,8 @@ public class LikeServiceImpl implements LikeService {
     private final UserRepository userRepository;
 
     @Override
-    public String toggleLike(Long blogId) {
+    @Transactional
+    public LikeResponse toggleLike(Long blogId) {
 
         String email = SecurityContextHolder
                 .getContext()
@@ -37,7 +41,9 @@ public class LikeServiceImpl implements LikeService {
         return likeRepository.findByBlogAndUser(blog, user)
                 .map(existingLike -> {
                     likeRepository.delete(existingLike);
-                    return "Blog unliked";
+                    likeRepository.flush();
+                    long count = likeRepository.countByBlog(blog);
+                    return new LikeResponse(false, count, "Blog unliked");
                 })
                 .orElseGet(() -> {
                     Like like = Like.builder()
@@ -46,7 +52,9 @@ public class LikeServiceImpl implements LikeService {
                             .build();
 
                     likeRepository.save(like);
-                    return "Blog liked";
+                    likeRepository.flush();
+                    long count = likeRepository.countByBlog(blog);
+                    return new LikeResponse(true, count, "Blog liked");
                 });
     }
 

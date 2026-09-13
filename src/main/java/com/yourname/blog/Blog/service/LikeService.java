@@ -1,8 +1,10 @@
 package com.yourname.blog.Blog.service;
 
+import com.yourname.blog.Blog.dto.LikeResponse;
+
 public interface LikeService {
 
-    String toggleLike(Long blogId);
+    LikeResponse toggleLike(Long blogId);
 
     long getLikeCount(Long blogId);
 }

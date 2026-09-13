@@ -40,6 +40,12 @@ public class Blog {
         createdAt = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bookmark> bookmarks;
 }

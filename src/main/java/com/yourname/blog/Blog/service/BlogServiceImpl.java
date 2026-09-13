@@ -60,6 +60,7 @@ public class BlogServiceImpl implements BlogService {
 
     // ✅ Update Blog
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public Blog updateBlog(Long id, Blog updatedBlog) {
 
         Blog blog = getBlogById(id);
@@ -77,6 +78,7 @@ public class BlogServiceImpl implements BlogService {
 
     // ✅ Delete Blog
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void deleteBlog(Long id) {
 
         Blog blog = getBlogById(id);

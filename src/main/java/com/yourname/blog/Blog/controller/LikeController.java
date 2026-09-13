@@ -1,5 +1,6 @@
 package com.yourname.blog.Blog.controller;
 
+import com.yourname.blog.Blog.dto.LikeResponse;
 import com.yourname.blog.Blog.service.LikeService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/{blogId}")
-    public String toggleLike(@PathVariable Long blogId) {
+    public LikeResponse toggleLike(@PathVariable Long blogId) {
         return likeService.toggleLike(blogId);
     }
 

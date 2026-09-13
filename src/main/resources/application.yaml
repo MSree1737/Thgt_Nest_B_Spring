@@ -28,7 +28,7 @@ brevo:
 app:
   frontend-url: ${FRONTEND_URL:http://localhost:5173}
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:local-development-secret-change-before-production-123}
   cors:
     allowed-origins: ${FRONTEND_URL:http://localhost:5173}
 
