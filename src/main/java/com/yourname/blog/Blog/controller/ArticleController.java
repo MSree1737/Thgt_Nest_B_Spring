@@ -57,32 +57,6 @@ public class ArticleController {
                 .map(mapper::map);
     }
 
-    @GetMapping("/{id}")
-    @Transactional(readOnly = true)
-    public ArticleResponse article(@PathVariable Long id) {
-        Blog blog = blogs.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Article not found with id: " + id));
-        return mapper.map(blog);
-    }
-
-    @GetMapping("/search")
-    @Transactional(readOnly = true)
-    public List<ArticleResponse> search(@RequestParam String q) {
-        return blogs.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(q, q)
-                .stream()
-                .map(mapper::map)
-                .toList();
-    }
-
-    @GetMapping("/mine")
-    @Transactional(readOnly = true)
-    public List<ArticleResponse> mine() {
-        return blogs.findByAuthor(me())
-                .stream()
-                .map(mapper::map)
-                .toList();
-    }
-
     @GetMapping("/following")
     @Transactional(readOnly = true)
     public Page<ArticleResponse> following(
@@ -100,6 +74,32 @@ public class ArticleController {
 
         return blogs.findByAuthorIn(followedUsers, PageRequest.of(page, size, Sort.by("createdAt").descending()))
                 .map(mapper::map);
+    }
+
+    @GetMapping("/mine")
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> mine() {
+        return blogs.findByAuthor(me())
+                .stream()
+                .map(mapper::map)
+                .toList();
+    }
+
+    @GetMapping("/search")
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> search(@RequestParam String q) {
+        return blogs.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(q, q)
+                .stream()
+                .map(mapper::map)
+                .toList();
+    }
+
+    @GetMapping("/{id:\\d+}")
+    @Transactional(readOnly = true)
+    public ArticleResponse article(@PathVariable Long id) {
+        Blog blog = blogs.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Article not found with id: " + id));
+        return mapper.map(blog);
     }
 
     @PostMapping

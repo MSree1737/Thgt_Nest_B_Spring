@@ -29,7 +29,7 @@ public class FollowController {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
-    @PostMapping("/{targetUserId}")
+    @PostMapping("/{targetUserId:\\d+}")
     @Transactional
     public ResponseEntity<FollowResponse> toggleFollow(@PathVariable Long targetUserId) {
         User current = me();
@@ -65,7 +65,7 @@ public class FollowController {
         return ResponseEntity.ok(new FollowResponse(nowFollowing, followersCount, followingCount, message));
     }
 
-    @GetMapping("/status/{targetUserId}")
+    @GetMapping("/status/{targetUserId:\\d+}")
     @Transactional(readOnly = true)
     public ResponseEntity<FollowResponse> getStatus(@PathVariable Long targetUserId) {
         User target = userRepository.findById(targetUserId)

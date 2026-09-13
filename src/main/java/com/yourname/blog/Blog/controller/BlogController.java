@@ -50,8 +50,20 @@ public class BlogController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Your blogs fetched successfully", blogService.getMyBlogs()));
     }
 
+    // ✅ Search Blogs
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<Blog>>> searchBlogs(
+            @RequestParam String keyword) {
+
+        List<Blog> blogs = blogService.searchBlogs(keyword);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Blogs fetched successfully", blogs)
+        );
+    }
+
     // ✅ Get Blog By ID
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public ResponseEntity<ApiResponse<Blog>> getBlog(@PathVariable Long id) {
 
         Blog blog = blogService.getBlogById(id);
@@ -62,7 +74,7 @@ public class BlogController {
     }
 
     // ✅ Update Blog
-    @PutMapping("/{id}")
+    @PutMapping("/{id:\\d+}")
     public ResponseEntity<ApiResponse<Blog>> updateBlog(
             @PathVariable Long id,
             @RequestBody Blog blog) {
@@ -75,25 +87,13 @@ public class BlogController {
     }
 
     // ✅ Delete Blog
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<ApiResponse<String>> deleteBlog(@PathVariable Long id) {
 
         blogService.deleteBlog(id);
 
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "Blog deleted successfully", null)
-        );
-    }
-
-    // ✅ Search Blogs
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<Blog>>> searchBlogs(
-            @RequestParam String keyword) {
-
-        List<Blog> blogs = blogService.searchBlogs(keyword);
-
-        return ResponseEntity.ok(
-                new ApiResponse<>(true, "Blogs fetched successfully", blogs)
         );
     }
 }
